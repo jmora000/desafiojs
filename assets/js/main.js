@@ -40,29 +40,25 @@ const pomodoros = parseInt(prompt("Ingrese la cantidad de pomodoros que desea es
 const totalStudyTime = pomodoros * studySeconds
 
 // Variables de conteo
-let actualPomo = 0 //Este es el pomodoro actual 
 let actualTime = 0
 // Mientras no se completen los pomodoros indicados
-while (actualPomo <= pomodoros){
+for (let actualPomo=1; actualPomo<=pomodoros; actualPomo++){
     alert("Comienza el pomodoro numero " + actualPomo + "!")
     // Se setea el tiempo de estudio y comienza el mismo.
     actualTime = studySeconds
-    while (actualTime != 0){
+    for(let actualTime=studySeconds; actualTime>=0; actualTime--){
         console.log("Estudio: " + printTime(actualTime)) // Se muestra el tiempo
-        actualTime-- //Pasa un segundo
     }
     // Se comprueba que no sea la ultima vuelta (ultimo pomodoro).
     if (actualPomo != pomodoros){
         alert("Pomodoro " + actualPomo + " finalizado, comienza el break.")
         // Se setea el tiempo de break y comienza el mismo.
         actualTime = breakSeconds
-        while (actualTime != 0){
+        for(let actualTime=studySeconds; actualTime>=0; actualTime--){
             console.log("Break: " + printTime(actualTime)) // Se muestra el tiempo
-            actualTime-- //Pasa un segundo
         }
     }else {
         alert("Finalizo el estudio!")
         alert("Tiempo total estudiado: " + printTime(totalStudyTime))
     }
-    actualPomo++
 }
