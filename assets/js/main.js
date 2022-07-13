@@ -19,7 +19,7 @@ class User{
         this.tasks = []
     }
     addTask(){
-        this.tasks.push(new Task(validateLength("Ingrese el nombre de la tarea", 10)))
+        this.tasks.push(new Task(validateLength(10, "Ingrese el nombre de la tarea")))
     }
     listTasks(){
         if (this.tasks.length == 0){ console.log("No hay tareas agregadas a la lista.") }
@@ -176,4 +176,7 @@ function tasksMenu(user){
     }
 }
 let usuario = new User("Jose")
-usuario.modifyTimer()
+usuario.addTask()
+console.log("Tarea creada")
+usuario.tasks[0].markAsDone()
+console.log('Tarea "' + usuario.tasks[0].title + '" finalizada.')
