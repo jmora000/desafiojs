@@ -6,7 +6,9 @@ class Task{
         this.date = date
         this.done = false
     }
-    modifyTitle(){this.title = validateLength(10, "Ingrese el titulo de la tarea")}
+    setTitle(){this.title = validateLength("Ingrese el titulo de la tarea", 10)}
+    setDescription(){this.description = validateLength("Ingrese la descripción de la tarea", 200)}
+    setPriority(){this.priority = validateNumber("Ingrese la prioridad de la tarea. Debe ser un numero entre 1 y 5 (Mayor numero, mayor prioridad)", 1, 5)}
     markAsDone(){this.done = true}
 }
 
@@ -18,21 +20,31 @@ class User{
         this.pomodoros = 5 // 5 pomodoros (repeticiones) por defecto
         this.tasks = []
     }
+    // Metodo que permite agregar una tarea a la lista.
     addTask(){
-        this.tasks.push(new Task(validateLength(10, "Ingrese el nombre de la tarea")))
+        this.tasks.push(new Task(validateLength("Ingrese el nombre de la tarea", 20)))
     }
-    listTasks(){
+    // Metodo que muestra los nombres de TODAS las tareas agregadas.
+    listAllTasks(){
         if (this.tasks.length == 0){ console.log("No hay tareas agregadas a la lista.") }
         else{
-            this.tasks.forEach(task => console.log(task))
+            this.tasks.map(task => task.title).forEach(name => console.log(name))
+        }
+    }
+    // Metodo que muestra los nombres de las tareas que faltan por terminar.
+    listRemainingTasks(){
+        if (this.tasks.length == 0){ console.log("No hay tareas agregadas a la lista.") }
+        else{
+            this.tasks.filter(task => !task.done).map(task => task.title).forEach(name => console.log(name))
         }
     }
     // Metodo que permite modificar los valores 
-    modifyTimer(){
+    setTimer(){
         this.studySeconds = validateNumber("Ingrese la cantidad de MINUTOS que desea estudiar")*60
         this.breakSeconds = validateNumber("Ingrese la cantidad de MINUTOS que desea descansar entre cada pomodoro")*60
         this.pomodoros = validateNumber("Ingrese la cantidad de pomodoros que desea estudiar (Se recomienda entre 2 y 5)")
     }
+    // Metodo que incia el timer teniendo en cuenta los atributos seteados.
     initTimer(){
         for (let actualPomo=1; actualPomo<=this.pomodoros; actualPomo++){
             alert("Comienza el pomodoro numero " + actualPomo + "!")
@@ -53,9 +65,19 @@ class User{
             }
         }
     }
+    // Metodo que ordena la lista de tareas por mayor prioridad. Mayor numero mayor prioridad.
+    orderByHighPrio(){
+        this.tasks.sort((task1, task2) => task2.priority-task1.priority)
+    }
+    // Metodo que ordena la lista de taras por menor prioridad. Menor numero menor prio
+    orderByLowPrio(){
+        this.orderByHighPrio()
+        this.tasks.reverse()
+    }
 }
 
-function validateLength(limit, text="Ingrese un texto"){
+// Funcion que permite validar si el largo de un texto no se pasa de un limite.
+function validateLength(text="Ingrese un texto", limit){
     let input
     do{
         input = prompt(text)
@@ -64,7 +86,6 @@ function validateLength(limit, text="Ingrese un texto"){
     } while(true)
     return input
 }
-
 // Funcion que permite validar que un texto contenga solo chars numericos
 const isNumeric = input => {
     if (input == ""){return false}
@@ -73,7 +94,6 @@ const isNumeric = input => {
     }
     return true
 }
-
 // Funcion que permite validar que un input numerico se encuentre en un rango especificado.
 function validateNumber (text="Ingrese un numero", min=-Infinity, max=Infinity){
     let input
@@ -94,9 +114,9 @@ function validateNumber (text="Ingrese un numero", min=-Infinity, max=Infinity){
 }
 
 // Funcion que extrae la cantidad de horas de una cantidad de segundos pasada como parametro.
-const extractHours = (seconds) => parseInt(seconds/3600)
+const extractHours = (seconds) => Math.floor(seconds/3600)
 // Funcion que extrae la cantidad de minutos de una cantidad de segundos pasada como parametro.
-const extractMinutes = (seconds) => parseInt((seconds%3600)/60) 
+const extractMinutes = (seconds) => Math.floor((seconds%3600)/60) 
 // Funcion que extrae la cantidad de segundos (descontando minutos y horas) de una cantidad de segundos pasada como parametro.
 const extractSeconds = (seconds) => (seconds%3600)%60
 
@@ -118,13 +138,13 @@ function mainMenu(user){
         option = parseInt(prompt("Ingrese una opcion: \n0- Salir \n1- Temporizador \n2- Tareas"))
         switch (option){
             case 0:
-                break // Para que no muestre opcion incorrecta.
+                break
             case 1:
-                //
+                // Se abre el menu del timer
                 timerMenu(user)
                 break
             case 2:
-                //
+                // Se abre el menu de tareas
                 tasksMenu(user)
                 break
             default:
@@ -132,22 +152,21 @@ function mainMenu(user){
         }
     }
 }
-
 // Funcion que activa el menu del timer
 function timerMenu(user){
     let option
     while(option != 0){
-        option = parseInt(prompt("Ingrese una opcion: \n0- Menú anterior"))
+        option = parseInt(prompt("Ingrese una opcion: \n0- Menú anterior \n1- Inciar sesión de estudio \n2- Modificar configuracion de los pomodoros"))
         switch (option){
             case 0:
                 break
             case 1:
                 //
-                alert("OPT1")
+                user.initTimer()
                 break
             case 2:
                 //
-                alert("OPT2")
+                user.setTimer()
                 break
             default:
                 alert("Opcion incorrecta, intente nuevamente")
@@ -157,26 +176,53 @@ function timerMenu(user){
 // Funcion que activa el menu del to-do list
 function tasksMenu(user){
     let option
+    let taskIndex
     while(option != 0){
-        option = parseInt(prompt("Ingrese una opcion: \n0-Menú anterior"))
+        option = parseInt(prompt("Ingrese una opcion: \n0-Menú anterior \n1- Listar tareas \n2- Listar tareas sin finalizar \n3- Agregar una tarea \n4- Ordenar tareas por prioridad alta primero \n5- Modificar una tarea \n6- Marcar tarea como completada"))
         switch (option){
             case 0:
                 break
             case 1:
                 //
-                alert("OPT1")
+                user.listAllTasks()
                 break
             case 2:
                 //
-                alert("OPT2")
+                user.listRemainingTasks()
+                break
+            case 3:
+                //
+                user.addTask()
+                break
+            case 4:
+                //
+                user.orderByHighPrio()
+                alert("Lista ordenada por prioridad!")
+                break
+            case 5:
+                //
+                console.log("1-")
+                user.listAllTasks()
+                console.log(user.tasks.length + "-")
+                taskIndex = validateNumber("Ingrese numero de indice de la tarea", 1, user.tasks.length)-1 // Esto va a ser optimizado, pero por temas de tiempo lo voy a hacer con los indices.
+                user.tasks[taskIndex].setTitle()
+                user.tasks[taskIndex].setDescription()
+                user.tasks[taskIndex].setPriority()
+                break
+            case 6:
+                console.log("1-")
+                user.listAllTasks()
+                console.log(user.tasks.length + "-")
+                taskIndex = validateNumber("Ingrese numero de indice de la tarea", 1, user.tasks.length)-1
+                user.tasks[taskIndex].markAsDone()
+                alert("Tarea completada!")
                 break
             default:
                 alert("Opcion incorrecta, intente nuevamente")
         }
     }
 }
-let usuario = new User("Jose")
-usuario.addTask()
-console.log("Tarea creada")
-usuario.tasks[0].markAsDone()
-console.log('Tarea "' + usuario.tasks[0].title + '" finalizada.')
+
+let user = new User (validateLength("Ingrese su nombre!", 15))
+alert("Bienvenido, " + user.name)
+mainMenu(user)
