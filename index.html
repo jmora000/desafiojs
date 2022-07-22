@@ -19,7 +19,7 @@
         </nav>
     </header>
     <main>
-        <section>
+        <section class="static-data">
             <h1>Datos de usuario</h1>
             <article>
                 <div>
@@ -33,6 +33,18 @@
             <h2>Estadisticas</h2>
             <div>Tiempo total estudiado</div>
             <div>Cantidad de tareas completadas</div>
+        </section>
+        <section class="dynamic-data">
+            <div class="dynamic-data__controlsbox">
+                <button class="dynamic-data__controlbox__init">Iniciar Pomodoro</button>
+            </div>
+            <div class="dynamic-data__pomobox">
+                <p class="dynamic-data__pomobox__title">Pomodoro</p>
+                <p class="dynamic-data__pomobox__count"></p>
+            </div>
+            <div class="dynamic-data__timerbox">
+                <p class="dynamic-data__timerbox__timer">00:00:00</p>
+            </div>
         </section>
         <footer>
             <p>Tuviste un problema? Contactate con nuestro equipo de soporte!</p>

@@ -46,11 +46,14 @@ class User{
     }
     // Metodo que incia el timer teniendo en cuenta los atributos seteados.
     initTimer(){
+        let timeText = document.querySelector(".dynamic-data__timerbox__timer")
         for (let actualPomo=1; actualPomo<=this.pomodoros; actualPomo++){
             alert("Comienza el pomodoro numero " + actualPomo + "!")
             // Se setea el tiempo de estudio y comienza el mismo.
             for(let actualTime=this.studySeconds; actualTime>=0; actualTime--){
                 console.log("Estudio: " + printTime(actualTime)) // Se muestra el tiempo
+                timeText.innerText = printTime(actualTime)
+                debugger
             }
             // Se comprueba que no sea la ultima vuelta (ultimo pomodoro).
             if (actualPomo != this.pomodoros){
@@ -223,6 +226,6 @@ function tasksMenu(user){
     }
 }
 
-let user = new User (validateLength("Ingrese su nombre!", 15))
-alert("Bienvenido, " + user.name)
-mainMenu(user)
+let boton = document.querySelector(".dynamic-data__controlbox__init")
+user = new User("Jose")
+boton.onclick = () => {user.initTimer()}
