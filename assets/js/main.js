@@ -46,25 +46,26 @@ class User{
     }
     // Metodo que incia el timer teniendo en cuenta los atributos seteados.
     initTimer(){
-        let timeText = document.querySelector(".dynamic-data__timerbox__timer")
+        let pomoCount = document.querySelector(".dynamic-data__pomodoro")
+        let timeText = document.querySelector(".dynamic-data__timer")
         for (let actualPomo=1; actualPomo<=this.pomodoros; actualPomo++){
-            alert("Comienza el pomodoro numero " + actualPomo + "!")
+            pomoCount.innerText = "Pomodoro " + actualPomo
             // Se setea el tiempo de estudio y comienza el mismo.
             for(let actualTime=this.studySeconds; actualTime>=0; actualTime--){
-                console.log("Estudio: " + printTime(actualTime)) // Se muestra el tiempo
                 timeText.innerText = printTime(actualTime)
                 debugger
             }
             // Se comprueba que no sea la ultima vuelta (ultimo pomodoro).
             if (actualPomo != this.pomodoros){
-                alert("Pomodoro " + actualPomo + " finalizado, comienza el break.")
+                pomoCount.innerText = "Break " + actualPomo
                 // Se setea el tiempo de break y comienza el mismo.
                 for(let actualTime=this.breakSeconds; actualTime>=0; actualTime--){
-                    console.log("Break: " + printTime(actualTime)) // Se muestra el tiempo
+                    timeText.innerText = printTime(actualTime)
+                    debugger
                 }
             }else {
-                alert("Finalizo el estudio!")
-                alert("Tiempo total estudiado: " + printTime(this.studySeconds*this.pomodoros))
+                pomoCount.innerText = "Pomodoro Finalizado"
+                timeText.innerText = "Tiempo total estudiado: " + printTime(this.studySeconds*this.pomodoros)
             }
         }
     }
@@ -226,6 +227,11 @@ function tasksMenu(user){
     }
 }
 
+
+alert("Bienvenidos a la segunda entrega del proyecto.")
+alert("Debido a que no se manejar interrupciones, asincronicas, o temporizadores...")
+alert("Se incluyeron sentencias 'debugger' a fin de demostrar que el temporizador funciona correctamente")
+alert("Recomiendo configurar el timer a un tiempo bajo para que no sea un viaje ver el programa.")
 let boton = document.querySelector(".dynamic-data__controlbox__init")
 user = new User("Jose")
 boton.onclick = () => {user.initTimer()}
